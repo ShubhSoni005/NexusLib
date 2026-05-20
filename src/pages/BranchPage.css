@@ -1,0 +1,100 @@
+.branch-header {
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-10);
+}
+.branch-header span { margin-bottom: var(--space-4); display: inline-block; }
+.branch-header h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: var(--space-3);
+  background: linear-gradient(135deg, var(--text-primary) 50%, var(--branch-color, var(--accent-light)));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.branch-header p { font-size: var(--text-lg); color: var(--text-secondary); }
+
+.phase-section { margin-bottom: var(--space-12); }
+
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+.phase-header h2 { font-size: var(--text-xl); margin: 0; }
+
+.sem-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.sem-card {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  text-decoration: none;
+  min-height: 200px;
+}
+
+.sem-card__num {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--bg-hover);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.sem-card:hover .sem-card__num { color: var(--accent-subtle); }
+
+.sem-card__title {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: auto;
+}
+
+.sem-card__desc {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.sem-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-3);
+}
+
+.sem-card__count {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.sem-card__arrow {
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+  transition: all var(--transition-base);
+}
+
+.sem-card:hover .sem-card__arrow {
+  background: var(--accent);
+  color: #fff;
+  transform: translateX(3px);
+}
+
+@media (max-width: 900px) {
+  .sem-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .sem-grid { grid-template-columns: 1fr; }
+}

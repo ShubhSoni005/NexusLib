@@ -29,7 +29,7 @@ export default function Navbar() {
       <div className="container navbar__inner">
         <Link to="/" className="navbar__logo">
           <BookOpen size={20} />
-          <span>EduShare</span>
+          <span>NexusLib</span>
         </Link>
 
         <div className={`navbar__links${open ? ' navbar__links--open' : ''}`}>

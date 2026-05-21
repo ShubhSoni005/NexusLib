@@ -25,7 +25,7 @@ export function LoginPage() {
   return (
     <div className="auth-page page-content">
       <div className="auth-card card animate-fade-up">
-        <div className="auth-logo"><BookOpen size={22} /><span>EduShare</span></div>
+        <div className="auth-logo"><BookOpen size={22} /><span>NexusLib</span></div>
         <h1 className="auth-title">Welcome back</h1>
         <p className="auth-sub">Sign in to access your saved materials and study plans.</p>
 
@@ -77,7 +77,7 @@ export function SignupPage() {
   return (
     <div className="auth-page page-content">
       <div className="auth-card card animate-fade-up">
-        <div className="auth-logo"><BookOpen size={22} /><span>EduShare</span></div>
+        <div className="auth-logo"><BookOpen size={22} /><span>NexusLib</span></div>
         <h1 className="auth-title">Create your account</h1>
         <p className="auth-sub">Join thousands of GTU students sharing knowledge.</p>
 

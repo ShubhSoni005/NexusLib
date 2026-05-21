@@ -1,4 +1,4 @@
-# EduShare — GTU Engineering Resources
+# NexusLib — GTU Engineering Resources
 
 A professional academic resource sharing platform for GTU (Gujarat Technological University) engineering students. Built with React + Vite.
 

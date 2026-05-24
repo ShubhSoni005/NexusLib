@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../../Context/ThemeContext';
 import { Sun, Moon, BookOpen, Menu, X, Upload, Bot } from 'lucide-react';
 import './Navbar.css';
 
 export default function Navbar() {
   const { theme, toggle } = useTheme();
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen]         = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -19,9 +19,9 @@ export default function Navbar() {
   useEffect(() => setOpen(false), [location]);
 
   const links = [
-    { to: '/', label: 'Home' },
+    { to: '/',            label: 'Home' },
     { to: '/study-guide', label: 'AI Guide', icon: <Bot size={14} /> },
-    { to: '/upload', label: 'Upload', icon: <Upload size={14} /> },
+    { to: '/upload',      label: 'Upload',   icon: <Upload size={14} /> },
   ];
 
   return (
@@ -44,7 +44,7 @@ export default function Navbar() {
             </Link>
           ))}
           <div className="navbar__divider" />
-          <Link to="/login" className="btn btn-ghost btn-sm">Sign In</Link>
+          <Link to="/login"  className="btn btn-ghost btn-sm">Sign In</Link>
           <Link to="/signup" className="btn btn-primary btn-sm">Join Free</Link>
         </div>
 

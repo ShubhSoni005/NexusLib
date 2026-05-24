@@ -4,23 +4,20 @@ import { BookOpen, Eye, EyeOff } from 'lucide-react';
 import './AuthPages.css';
 
 export function LoginPage() {
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [show, setShow] = useState(false);
+  const [form, setForm]     = useState({ email: '', password: '' });
+  const [show, setShow]     = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const validate = () => {
     const e = {};
-    if (!form.email.includes('@')) e.email = 'Enter a valid email';
-    if (form.password.length < 6) e.password = 'Minimum 6 characters';
+    if (!form.email.includes('@')) e.email    = 'Enter a valid email';
+    if (form.password.length < 6)  e.password = 'Minimum 6 characters';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
-  const submit = (e) => {
-    e.preventDefault();
-    if (validate()) navigate('/');
-  };
+  const submit = (e) => { e.preventDefault(); if (validate()) navigate('/'); };
 
   return (
     <div className="auth-page page-content">
@@ -55,24 +52,21 @@ export function LoginPage() {
 }
 
 export function SignupPage() {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const [show, setShow] = useState(false);
+  const [form, setForm]     = useState({ name: '', email: '', password: '' });
+  const [show, setShow]     = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const validate = () => {
     const e = {};
-    if (!form.name.trim()) e.name = 'Name is required';
-    if (!form.email.includes('@')) e.email = 'Enter a valid email';
-    if (form.password.length < 6) e.password = 'Minimum 6 characters';
+    if (!form.name.trim())         e.name     = 'Name is required';
+    if (!form.email.includes('@')) e.email    = 'Enter a valid email';
+    if (form.password.length < 6)  e.password = 'Minimum 6 characters';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
-  const submit = (e) => {
-    e.preventDefault();
-    if (validate()) navigate('/');
-  };
+  const submit = (e) => { e.preventDefault(); if (validate()) navigate('/'); };
 
   return (
     <div className="auth-page page-content">

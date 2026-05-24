@@ -1,22 +1,22 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { ExternalLink, X, FileText, Video, Book, BookOpen, FlaskConical, Award } from 'lucide-react';
-import { branches, semesters, getSubjectData } from '../data/database';
-import Breadcrumb from '../components/Breadcrumb';
+import { branches, semesters, getSubjectData } from '@db';
+import Breadcrumb from '../../Components/Breadcrumb/Breadcrumb';
 import './SubjectPage.css';
 
 const ICONS = {
-  syllabus: <FileText size={22} />,
-  pyq: <Award size={22} />,
-  notes: <BookOpen size={22} />,
-  youtube: <Video size={22} />,
+  syllabus:  <FileText size={22} />,
+  pyq:       <Award size={22} />,
+  notes:     <BookOpen size={22} />,
+  youtube:   <Video size={22} />,
   solutions: <FlaskConical size={22} />,
-  books: <Book size={22} />,
+  books:     <Book size={22} />,
 };
 
 const CAT_COLORS = {
   syllabus: '#6366f1', pyq: '#f59e0b',
-  notes: '#22c55e', youtube: '#ef4444',
+  notes: '#22c55e',   youtube: '#ef4444',
   solutions: '#06b6d4', books: '#8b5cf6',
 };
 
@@ -26,8 +26,8 @@ export default function SubjectPage() {
   const [modal, setModal] = useState(null);
 
   const branchData = branches.find(b => b.id === branch);
-  const semData = semesters[branch]?.find(s => s.num === parseInt(sem));
-  const data = getSubjectData(branch, parseInt(sem), decodedSubject);
+  const semData    = semesters[branch]?.find(s => s.num === parseInt(sem));
+  const data       = getSubjectData(branch, parseInt(sem), decodedSubject);
 
   if (!branchData || !semData) return <div className="page-content container"><p className="text-muted">Not found.</p></div>;
 
@@ -89,13 +89,7 @@ export default function SubjectPage() {
             </div>
             <div className="modal__body">
               {modal.items.map((item, i) => (
-                <a
-                  key={i}
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="resource-item"
-                >
+                <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" className="resource-item">
                   <span className="resource-item__title">{item.title}</span>
                   <ExternalLink size={14} className="resource-item__icon" />
                 </a>

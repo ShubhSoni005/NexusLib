@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { branches, semesters } from '../data/database';
-import Breadcrumb from '../components/Breadcrumb';
+import { branches, semesters } from '@db';
+import Breadcrumb from '../../Components/Breadcrumb/Breadcrumb';
 import './BranchPage.css';
 
 export default function BranchPage() {
@@ -11,7 +11,7 @@ export default function BranchPage() {
 
   if (!branchData) return <div className="page-content container"><p className="text-muted">Branch not found.</p></div>;
 
-  const foundation = semList.filter(s => s.phase === 'Foundation');
+  const foundation     = semList.filter(s => s.phase === 'Foundation');
   const specialization = semList.filter(s => s.phase === 'Specialization');
 
   return (
@@ -25,8 +25,8 @@ export default function BranchPage() {
           <p>{branchData.desc}</p>
         </div>
 
-        <PhaseSection title="Foundation Phase" tag="COMMON" sems={foundation} branch={branch} delay={0} />
-        <PhaseSection title="Specialization Phase" tag="BRANCH SPECIFIC" sems={specialization} branch={branch} delay={2} />
+        <PhaseSection title="Foundation Phase"      tag="COMMON"         sems={foundation}     branch={branch} delay={0} />
+        <PhaseSection title="Specialization Phase"  tag="BRANCH SPECIFIC" sems={specialization} branch={branch} delay={2} />
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, GraduationCap } from 'lucide-react';
-import { branches, semesters } from '../data/database';
-import './Home.css';
+import { branches, semesters } from '@db';
+import './HomePage.css';
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div className="page-content">
       {/* Hero */}
@@ -66,10 +66,10 @@ export default function Home() {
         <div className="container">
           <div className="stats-grid">
             {[
-              { val: '3', label: 'Engineering Branches' },
-              { val: '24', label: 'Semesters Covered' },
+              { val: '3',    label: 'Engineering Branches' },
+              { val: '24',   label: 'Semesters Covered' },
               { val: '100+', label: 'Subjects Available' },
-              { val: '6', label: 'Resource Categories' },
+              { val: '6',    label: 'Resource Categories' },
             ].map((s, i) => (
               <div key={i} className={`stat-card animate-fade-up delay-${(i + 1) * 100}`}>
                 <div className="stat-card__val">{s.val}</div>

@@ -1,26 +1,24 @@
 import { useState } from 'react';
 import { Upload as UploadIcon, CheckCircle2, X } from 'lucide-react';
-import { branches, semesters } from '../data/database';
+import { branches, semesters } from '@db';
 import './UploadPage.css';
 
 const CATEGORIES = ['Syllabus', 'Previous Year Papers', 'Notes', 'YouTube Playlist', 'Solutions', 'Reference Books'];
 
 export default function UploadPage() {
-  const [form, setForm] = useState({ title: '', desc: '', branch: '', semester: '', subject: '', category: '' });
-  const [file, setFile] = useState(null);
-  const [drag, setDrag] = useState(false);
-  const [done, setDone] = useState(false);
+  const [form, setForm]     = useState({ title: '', desc: '', branch: '', semester: '', subject: '', category: '' });
+  const [file, setFile]     = useState(null);
+  const [drag, setDrag]     = useState(false);
+  const [done, setDone]     = useState(false);
   const [errors, setErrors] = useState({});
 
-  const semList = form.branch ? semesters[form.branch] || [] : [];
-  const subjectList = form.semester
-    ? semList.find(s => s.num === parseInt(form.semester))?.subjects || []
-    : [];
+  const semList     = form.branch   ? semesters[form.branch] || [] : [];
+  const subjectList = form.semester ? semList.find(s => s.num === parseInt(form.semester))?.subjects || [] : [];
 
   const set = (key, val) => {
     setForm(f => {
       const next = { ...f, [key]: val };
-      if (key === 'branch') { next.semester = ''; next.subject = ''; }
+      if (key === 'branch')   { next.semester = ''; next.subject = ''; }
       if (key === 'semester') { next.subject = ''; }
       return next;
     });
@@ -29,27 +27,18 @@ export default function UploadPage() {
 
   const validate = () => {
     const e = {};
-    if (!form.title.trim()) e.title = 'Title is required';
-    if (!form.branch) e.branch = 'Select a branch';
-    if (!form.semester) e.semester = 'Select a semester';
-    if (!form.subject) e.subject = 'Select a subject';
-    if (!form.category) e.category = 'Select a category';
-    if (!file) e.file = 'Please attach a file';
+    if (!form.title.trim()) e.title    = 'Title is required';
+    if (!form.branch)       e.branch   = 'Select a branch';
+    if (!form.semester)     e.semester = 'Select a semester';
+    if (!form.subject)      e.subject  = 'Select a subject';
+    if (!form.category)     e.category = 'Select a category';
+    if (!file)              e.file     = 'Please attach a file';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
-  const submit = (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-    setDone(true);
-  };
-
-  const onDrop = (e) => {
-    e.preventDefault(); setDrag(false);
-    const f = e.dataTransfer.files[0];
-    if (f) setFile(f);
-  };
+  const submit = (e) => { e.preventDefault(); if (!validate()) return; setDone(true); };
+  const onDrop = (e) => { e.preventDefault(); setDrag(false); const f = e.dataTransfer.files[0]; if (f) setFile(f); };
 
   if (done) return (
     <div className="page-content upload-success">
@@ -93,7 +82,6 @@ export default function UploadPage() {
                   </select>
                   {errors.branch && <span className="field-error">{errors.branch}</span>}
                 </div>
-
                 <div className="form-group">
                   <label className="label">Semester *</label>
                   <select className={`input select${errors.semester ? ' input--error' : ''}`} value={form.semester} onChange={e => set('semester', e.target.value)} disabled={!form.branch}>
@@ -113,7 +101,6 @@ export default function UploadPage() {
                   </select>
                   {errors.subject && <span className="field-error">{errors.subject}</span>}
                 </div>
-
                 <div className="form-group">
                   <label className="label">Category *</label>
                   <select className={`input select${errors.category ? ' input--error' : ''}`} value={form.category} onChange={e => set('category', e.target.value)}>
@@ -131,12 +118,7 @@ export default function UploadPage() {
           </div>
 
           <div className="upload-drop-col animate-fade-up delay-100">
-            <div
-              className={`drop-zone${drag ? ' drop-zone--active' : ''}${errors.file ? ' drop-zone--error' : ''}`}
-              onDragOver={e => { e.preventDefault(); setDrag(true); }}
-              onDragLeave={() => setDrag(false)}
-              onDrop={onDrop}
-            >
+            <div className={`drop-zone${drag ? ' drop-zone--active' : ''}${errors.file ? ' drop-zone--error' : ''}`} onDragOver={e => { e.preventDefault(); setDrag(true); }} onDragLeave={() => setDrag(false)} onDrop={onDrop}>
               <UploadIcon size={32} className="drop-icon" />
               <p className="drop-title">Drag files here</p>
               <p className="drop-sub">Upload PDFs, docs or images (max 10MB each)</p>

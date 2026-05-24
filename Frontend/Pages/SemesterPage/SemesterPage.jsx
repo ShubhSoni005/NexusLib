@@ -1,20 +1,19 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Search, BookOpen } from 'lucide-react';
-import { branches, semesters } from '../data/database';
-import Breadcrumb from '../components/Breadcrumb';
+import { branches, semesters } from '@db';
+import Breadcrumb from '../../Components/Breadcrumb/Breadcrumb';
 import './SemesterPage.css';
 
 export default function SemesterPage() {
   const { branch, sem } = useParams();
   const [query, setQuery] = useState('');
   const branchData = branches.find(b => b.id === branch);
-  const semData = semesters[branch]?.find(s => s.num === parseInt(sem));
+  const semData    = semesters[branch]?.find(s => s.num === parseInt(sem));
 
   if (!branchData || !semData) return <div className="page-content container"><p className="text-muted">Not found.</p></div>;
 
-  const filtered = semData.subjects.filter(s => s.toLowerCase().includes(query.toLowerCase()));
-
+  const filtered      = semData.subjects.filter(s => s.toLowerCase().includes(query.toLowerCase()));
   const encodedBranch = encodeURIComponent(branch);
 
   return (

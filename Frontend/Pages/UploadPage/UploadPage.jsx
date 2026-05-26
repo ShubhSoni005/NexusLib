@@ -1,11 +1,23 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Upload as UploadIcon, CheckCircle2, X } from 'lucide-react';
 import { branches, semesters } from '@db';
+import { useAuth } from '../../Context/AuthContext';
 import './UploadPage.css';
 
 const CATEGORIES = ['Syllabus', 'Previous Year Papers', 'Notes', 'YouTube Playlist', 'Solutions', 'Reference Books'];
 
+const CATEGORY_MAP = {
+  'Syllabus': 'syllabus',
+  'Previous Year Papers': 'pyq',
+  'Notes': 'notes',
+  'YouTube Playlist': 'youtube',
+  'Solutions': 'solutions',
+  'Reference Books': 'books'
+};
+
 export default function UploadPage() {
+  const { user } = useAuth();
   const [form, setForm]     = useState({ title: '', desc: '', branch: '', semester: '', subject: '', category: '' });
   const [file, setFile]     = useState(null);
   const [drag, setDrag]     = useState(false);
@@ -37,8 +49,53 @@ export default function UploadPage() {
     return Object.keys(e).length === 0;
   };
 
-  const submit = (e) => { e.preventDefault(); if (!validate()) return; setDone(true); };
+  const submit = (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+    
+    // Save to localStorage so it dynamically renders in the subject pages
+    try {
+      const stored = localStorage.getItem('nl_custom_resources');
+      const customList = stored ? JSON.parse(stored) : [];
+      
+      const newResource = {
+        title: form.title,
+        desc: form.desc,
+        branch: form.branch,
+        semester: parseInt(form.semester),
+        subject: form.subject,
+        category: CATEGORY_MAP[form.category],
+        url: file ? URL.createObjectURL(file) : '#',
+        uploadedBy: user?.name || 'Anonymous',
+        createdAt: new Date().toISOString()
+      };
+      
+      customList.push(newResource);
+      localStorage.setItem('nl_custom_resources', JSON.stringify(customList));
+    } catch (err) {
+      console.error('Error saving upload data:', err);
+    }
+    
+    setDone(true);
+  };
+  
   const onDrop = (e) => { e.preventDefault(); setDrag(false); const f = e.dataTransfer.files[0]; if (f) setFile(f); };
+
+  if (!user) return (
+    <div className="page-content upload-auth-wall">
+      <div className="container">
+        <div className="upload-auth-card card animate-fade-up">
+          <UploadIcon size={48} className="auth-wall-icon" />
+          <h2>Join the Community</h2>
+          <p>You must be signed in to upload study materials and help your peers.</p>
+          <div className="auth-wall-actions">
+            <Link to="/login" className="btn btn-primary">Sign In</Link>
+            <Link to="/signup" className="btn btn-secondary">Join Free</Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   if (done) return (
     <div className="page-content upload-success">
@@ -154,3 +211,4 @@ export default function UploadPage() {
     </div>
   );
 }
+

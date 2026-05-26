@@ -22,7 +22,14 @@ function formatMsg(text) {
 }
 
 export default function StudyGuidePage() {
-  const [messages, setMessages] = useState([WELCOME]);
+  const [messages, setMessages] = useState(() => {
+    try {
+      const saved = localStorage.getItem('nl_chat_history');
+      return saved ? JSON.parse(saved) : [WELCOME];
+    } catch {
+      return [WELCOME];
+    }
+  });
   const [input, setInput]       = useState('');
   const [url, setUrl]           = useState('');
   const [showUrl, setShowUrl]   = useState(false);
@@ -32,7 +39,18 @@ export default function StudyGuidePage() {
   const fileRef   = useRef(null);
   const textRef   = useRef(null);
 
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, loading]);
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, loading]);
+
+  // Persist chat history to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('nl_chat_history', JSON.stringify(messages));
+    } catch (e) {
+      console.error('Error saving chat history:', e);
+    }
+  }, [messages]);
 
   const buildPrompt = (userText) => {
     let prompt = userText;
@@ -107,7 +125,14 @@ export default function StudyGuidePage() {
             <div className="capability"><Globe size={14} /> URL content reading</div>
             <div className="capability"><Bot size={14} /> GTU subject expertise</div>
           </div>
+          <div className="guide-sidebar__divider" />
+          <button className="btn btn-secondary btn-sm" style={{ width: '100%', justifyContent: 'center' }} onClick={() => {
+            if (window.confirm("Are you sure you want to clear your chat history?")) {
+              setMessages([WELCOME]);
+            }
+          }}>Clear Conversation</button>
         </aside>
+
 
         <div className="chat-container animate-fade-up delay-100">
           <div className="chat-messages">

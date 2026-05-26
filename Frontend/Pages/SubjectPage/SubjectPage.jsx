@@ -90,11 +90,19 @@ export default function SubjectPage() {
             <div className="modal__body">
               {modal.items.map((item, i) => (
                 <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" className="resource-item">
-                  <span className="resource-item__title">{item.title}</span>
+                  <div className="resource-item__content">
+                    <span className="resource-item__title">{item.title}</span>
+                    {item.isUserUploaded && (
+                      <span className="user-uploaded-badge">
+                        Uploaded by {item.uploadedBy}
+                      </span>
+                    )}
+                  </div>
                   <ExternalLink size={14} className="resource-item__icon" />
                 </a>
               ))}
             </div>
+
           </div>
         </div>
       )}

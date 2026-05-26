@@ -68,10 +68,9 @@ export const getBooks = (subject) =>
   ];
 
 // ─── Resource Generator ──────────────────────────────────────
-// Generates 6 resource categories for any subject
 export const makeResources = (subject) => {
   const slug = subject.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  return {
+  const base = {
     syllabus: {
       label: 'Syllabus',
       desc: 'Module-wise breakdown with exam weightage.',
@@ -130,4 +129,29 @@ export const makeResources = (subject) => {
       items: getBooks(subject),
     },
   };
+
+  // Dynamically load custom resources from localStorage
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = localStorage.getItem('nl_custom_resources');
+      if (stored) {
+        const customList = JSON.parse(stored);
+        customList.forEach(res => {
+          if (res.subject === subject && base[res.category]) {
+            base[res.category].items.push({
+              title: res.title,
+              url: res.url || '#',
+              isUserUploaded: true,
+              uploadedBy: res.uploadedBy || 'Anonymous'
+            });
+          }
+        });
+      }
+    } catch (e) {
+      console.error('Error loading custom resources:', e);
+    }
+  }
+
+  return base;
 };
+

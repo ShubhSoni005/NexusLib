@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BookOpen, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '../../Context/AuthContext';
 import './AuthPages.css';
 
 export function LoginPage() {
+  const { login } = useAuth();
   const [form, setForm]     = useState({ email: '', password: '' });
   const [show, setShow]     = useState(false);
   const [errors, setErrors] = useState({});
@@ -17,7 +19,13 @@ export function LoginPage() {
     return Object.keys(e).length === 0;
   };
 
-  const submit = (e) => { e.preventDefault(); if (validate()) navigate('/'); };
+  const submit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      login(form.email, form.password);
+      navigate('/');
+    }
+  };
 
   return (
     <div className="auth-page page-content">
@@ -52,6 +60,7 @@ export function LoginPage() {
 }
 
 export function SignupPage() {
+  const { signup } = useAuth();
   const [form, setForm]     = useState({ name: '', email: '', password: '' });
   const [show, setShow]     = useState(false);
   const [errors, setErrors] = useState({});
@@ -66,7 +75,13 @@ export function SignupPage() {
     return Object.keys(e).length === 0;
   };
 
-  const submit = (e) => { e.preventDefault(); if (validate()) navigate('/'); };
+  const submit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      signup(form.name, form.email, form.password);
+      navigate('/');
+    }
+  };
 
   return (
     <div className="auth-page page-content">
@@ -104,3 +119,4 @@ export function SignupPage() {
     </div>
   );
 }
+

@@ -63,23 +63,43 @@ export default function StudyGuidePage() {
     const key = import.meta.env.VITE_GEMINI_API_KEY;
     if (key) {
       try {
+        // Build conversation history for context (last 10 messages)
+        const history = messages.slice(-10).map(m => ({
+          role: m.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: m.content }],
+        }));
+
         const res = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              contents: [{ parts: [{ text: `You are an expert GTU engineering study assistant. Be concise, practical and exam-focused.\n\nUser: ${prompt}` }] }],
-              generationConfig: { maxOutputTokens: 1024, temperature: 0.7 },
+              systemInstruction: {
+                parts: [{ text: 'You are an expert GTU (Gujarat Technological University) engineering study assistant called NexusLib AI. Be concise, practical and exam-focused. Use markdown bold (**text**) and bullet points (•) for formatting. Help students with study plans, subject explanations, PYQ analysis, and exam tips.' }],
+              },
+              contents: [
+                ...history,
+                { role: 'user', parts: [{ text: prompt }] },
+              ],
+              generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
             }),
           }
         );
         const data = await res.json();
+        if (data.error) {
+          console.error('Gemini API error:', data.error);
+          return fallback(prompt);
+        }
         return data.candidates?.[0]?.content?.parts?.[0]?.text || fallback(prompt);
-      } catch { return fallback(prompt); }
+      } catch (err) {
+        console.error('Gemini API fetch failed:', err);
+        return fallback(prompt);
+      }
     }
     return fallback(prompt);
   };
+
 
   const fallback = (prompt) => {
     const p = prompt.toLowerCase();

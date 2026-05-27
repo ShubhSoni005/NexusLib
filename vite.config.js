@@ -4,8 +4,10 @@ import { fileURLToPath, URL } from 'node:url';
 
 // NexusLib — Vite Configuration
 // root: Frontend/ so index.html lives there
+// envDir: project root (one level up) so .env is read correctly
 export default defineConfig({
   root: './Frontend',
+  envDir: '..',
   plugins: [react()],
   resolve: {
     alias: {

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const ThemeContext = createContext(null);
 
@@ -71,29 +71,29 @@ export function ThemeProvider({ children }) {
     };
   }, []);
 
-  const setTheme = (theme) => {
+  const setTheme = useCallback((theme) => {
     setPreferences(prev => ({ ...prev, theme }));
-  };
+  }, []);
 
-  const setMotion = (motion) => {
+  const setMotion = useCallback((motion) => {
     setPreferences(prev => ({ ...prev, motion }));
-  };
+  }, []);
 
-  const setDensity = (density) => {
+  const setDensity = useCallback((density) => {
     setPreferences(prev => ({ ...prev, density }));
-  };
+  }, []);
 
-  const setLastPath = (lastPath) => {
+  const setLastPath = useCallback((lastPath) => {
     setPreferences(prev => ({ ...prev, lastPath }));
-  };
+  }, []);
 
-  const toggle = () => {
+  const toggle = useCallback(() => {
     setPreferences(prev => {
       const themes = ['dark', 'light', 'dim', 'amoled'];
       const nextIdx = (themes.indexOf(prev.theme) + 1) % themes.length;
       return { ...prev, theme: themes[nextIdx] };
     });
-  };
+  }, []);
 
   return (
     <ThemeContext.Provider value={{

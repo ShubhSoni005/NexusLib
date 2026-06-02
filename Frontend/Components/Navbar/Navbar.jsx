@@ -1,57 +1,31 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from '../../Context/ThemeContext';
 import { useAuth } from '../../Context/AuthContext';
-import { Sun, Moon, BookOpen, Menu, X, Upload, Bot, Search, LogOut } from 'lucide-react';
+import { 
+  Sun, Moon, BookOpen, Search, LogOut, Terminal, 
+  Settings, HelpCircle, LayoutDashboard, BrainCircuit, 
+  FolderHeart, UploadCloud, UserCircle, RefreshCw
+} from 'lucide-react';
 import GlobalSearch from '../GlobalSearch/GlobalSearch';
 import './Navbar.css';
 
 export default function Navbar() {
   const { theme, toggle } = useTheme();
   const { user, logout } = useAuth();
-  const [scrolled, setScrolled] = useState(false);
-  const [visible, setVisible] = useState(true);
-  const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [prevScrollY, setPrevScrollY] = useState(0);
   
   const location = useLocation();
+  const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
-  // Monitor scroll behavior: morph style and direction detection
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrolled(currentScrollY > 20);
-
-      if (currentScrollY > 80) {
-        if (currentScrollY > prevScrollY) {
-          setVisible(false); // scrolling down, hide navbar
-        } else {
-          setVisible(true); // scrolling up, show navbar
-        }
-      } else {
-        setVisible(true);
-      }
-      setPrevScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [prevScrollY]);
-
-  // Keydown listener for Command Palette shortcut (⌘K or Ctrl+K)
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setSearchOpen(true);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  // Parse path parameters for context-aware semester quick filters
+  const pathSegments = location.pathname.split('/').filter(Boolean);
+  let activeBranch = 'IT'; // default fallback
+  if (pathSegments[0] === 'branch' && pathSegments[1]) {
+    activeBranch = pathSegments[1].toUpperCase();
+  }
 
   // Click outside listener for profile dropdown
   useEffect(() => {
@@ -63,18 +37,6 @@ export default function Navbar() {
     document.addEventListener('mousedown', clickOutside);
     return () => document.removeEventListener('mousedown', clickOutside);
   }, []);
-
-  // Close mobile drawer on route changes
-  useEffect(() => {
-    setOpen(false);
-    setDropdownOpen(false);
-  }, [location]);
-
-  const links = [
-    { to: '/',            label: 'Home' },
-    { to: '/study-guide', label: 'AI Guide', icon: <Bot size={14} /> },
-    { to: '/upload',      label: 'Upload',   icon: <Upload size={14} /> },
-  ];
 
   const getInitials = (name) => {
     if (!name) return 'S';
@@ -90,142 +52,218 @@ export default function Navbar() {
     setSearchOpen(true);
   };
 
+  const handleSemesterClick = (semNum) => {
+    navigate(`/branch/${activeBranch}/semester/${semNum}`);
+  };
+
+  const isAuthPage = ['/login', '/signup'].includes(location.pathname);
+
+  // Link lists for navigation
+  const sidebarLinks = [
+    { to: '/',            label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
+    { to: '/branch/IT',   label: 'Disciplines', icon: <BookOpen size={18} /> },
+    { to: '/study-guide', label: 'AI Assistant', icon: <BrainCircuit size={18} /> },
+    { to: '/upload',      label: 'My Uploads', icon: <UploadCloud size={18} /> }
+  ];
+
   return (
     <>
-      <nav 
-        className={`navbar ${scrolled ? 'navbar--scrolled' : ''} ${!visible ? 'navbar--hidden' : ''} ${open ? 'navbar--drawer-open' : ''}`}
-        aria-label="Main Navigation"
-      >
-        <div className="container navbar__inner">
-          <Link to="/" className="navbar__logo" aria-label="NexusLib Home">
-            <BookOpen size={22} className="navbar__logo-icon" />
-            <span className="navbar__logo-text">NexusLib</span>
+      {/* 1. TOP HEADER NAVIGATION BAR */}
+      <header className="navbar-top-header surface-glass">
+        <div className="navbar-top-left">
+          <Link to="/" className="navbar-top-logo">
+            <span className="navbar-top-logo-text">NexusLib</span>
           </Link>
-
-          {/* Desktop Navigation Links */}
-          <div className="navbar__links-desktop">
-            {links.map(l => (
-              <Link
-                key={l.to}
-                to={l.to}
-                className={`navbar__link ${location.pathname === l.to ? 'navbar__link--active' : ''}`}
-              >
-                {l.icon && <span className="navbar__link-icon">{l.icon}</span>}
-                <span className="navbar__link-label">{l.label}</span>
-              </Link>
-            ))}
-          </div>
-
-          <div className="navbar__actions">
-            {/* Search Button with Keyboard Hint */}
-            <button 
-              className="search-toggle" 
-              onClick={handleSearchToggle} 
-              aria-label="Open Search Palette"
+          <div className="navbar-top-links-desktop">
+            <Link 
+              to="/branch/IT" 
+              className={`navbar-top-link ${location.pathname.startsWith('/branch') ? 'navbar-top-link--active' : ''}`}
             >
-              <Search size={16} />
-              <span className="kbd-shortcut">⌘K</span>
-            </button>
-
-            {/* Theme Toggle Button */}
-            <button className="theme-toggle" onClick={toggle} aria-label="Toggle visual theme">
-              {theme === 'dark' && <Sun size={16} />}
-              {theme === 'light' && <Moon size={16} />}
-              {theme === 'dim' && <Sun size={16} style={{ opacity: 0.7 }} />}
-              {theme === 'amoled' && <Sun size={16} style={{ color: 'var(--primary-base)' }} />}
-            </button>
-
-            {/* Authentication Avatar / Dropdown */}
-            {user ? (
-              <div className="navbar__profile-container" ref={dropdownRef}>
-                <button 
-                  className="navbar__avatar-btn" 
-                  onClick={() => setDropdownOpen(d => !d)}
-                  aria-expanded={dropdownOpen}
-                  aria-label="Open user menu"
-                >
-                  <div className="navbar__avatar">
-                    {getInitials(user.name)}
-                  </div>
-                </button>
-                
-                {dropdownOpen && (
-                  <div className="navbar__dropdown surface-floating animate-slide-down">
-                    <div className="navbar__dropdown-header">
-                      <p className="navbar__dropdown-name">{user.name}</p>
-                      <p className="navbar__dropdown-email">{user.email}</p>
-                    </div>
-                    <div className="divider" style={{ margin: 'var(--space-2) 0' }} />
-                    <button 
-                      onClick={logout} 
-                      className="navbar__dropdown-action"
-                      role="menuitem"
-                    >
-                      <LogOut size={14} />
-                      <span>Sign Out</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="navbar__auth-desktop">
-                <Link to="/login" className="btn btn-ghost btn-sm">Sign In</Link>
-                <Link to="/signup" className="btn btn-primary btn-sm">Join Free</Link>
-              </div>
-            )}
-
-            {/* Hamburger Trigger for Mobile */}
-            <button 
-              className="navbar__burger" 
-              onClick={() => setOpen(o => !o)} 
-              aria-label="Toggle navigation menu"
-              aria-expanded={open}
+              Disciplines
+            </Link>
+            <Link 
+              to="/study-guide" 
+              className={`navbar-top-link ${location.pathname === '/study-guide' ? 'navbar-top-link--active' : ''}`}
             >
-              {open ? <X size={20} /> : <Menu size={20} />}
-            </button>
+              AI Guide
+            </Link>
+            <Link 
+              to="/upload" 
+              className={`navbar-top-link ${location.pathname === '/upload' ? 'navbar-top-link--active' : ''}`}
+            >
+              Upload
+            </Link>
           </div>
         </div>
 
-        {/* Mobile Slide-In Navigation Drawer */}
-        <div className={`navbar__drawer surface-glass ${open ? 'navbar__drawer--open' : ''}`}>
-          <div className="navbar__drawer-content">
-            <div className="navbar__drawer-links">
-              {links.map((l, index) => (
-                <Link
-                  key={l.to}
-                  to={l.to}
-                  className={`navbar__drawer-link ${location.pathname === l.to ? 'navbar__drawer-link--active' : ''}`}
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  {l.icon}
-                  <span>{l.label}</span>
-                </Link>
-              ))}
-            </div>
-            
-            <div className="divider" />
-            
-            <div className="navbar__drawer-footer">
-              {user ? (
-                <div className="navbar__drawer-user">
-                  <div className="navbar__avatar">{getInitials(user.name)}</div>
-                  <div className="navbar__drawer-user-info">
-                    <p className="navbar__drawer-user-name">{user.name}</p>
-                    <button onClick={logout} className="btn btn-secondary btn-sm mt-2">
-                      <LogOut size={12} /> Sign Out
-                    </button>
-                  </div>
+        <div className="navbar-top-right">
+          {/* Quick Search Button */}
+          <button 
+            className="navbar-search-btn text-data-mono" 
+            onClick={handleSearchToggle}
+            aria-label="Open Search Palette"
+          >
+            <Search size={14} className="text-muted" />
+            <span>Search</span>
+            <kbd className="navbar-kbd">⌘K</kbd>
+          </button>
+
+          {/* Theme Toggler */}
+          <button 
+            className="navbar-icon-action" 
+            onClick={toggle} 
+            aria-label="Toggle visual theme"
+          >
+            {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+          </button>
+
+          {/* Profile Dropdown or Sign In */}
+          {user ? (
+            <div className="navbar-profile-wrapper" ref={dropdownRef}>
+              <button 
+                className="navbar-avatar-btn" 
+                onClick={() => setDropdownOpen(d => !d)}
+                aria-expanded={dropdownOpen}
+                aria-label="User actions menu"
+              >
+                <div className="navbar-avatar-initials">
+                  {getInitials(user.name)}
                 </div>
-              ) : (
-                <div className="navbar__drawer-auth">
-                  <Link to="/login" className="btn btn-secondary" style={{ width: '100%' }}>Sign In</Link>
-                  <Link to="/signup" className="btn btn-primary mt-2" style={{ width: '100%' }}>Join Free</Link>
+              </button>
+              
+              {dropdownOpen && (
+                <div className="navbar-profile-dropdown surface-floating animate-slide-down">
+                  <div className="navbar-dropdown-profile-info">
+                    <p className="navbar-dropdown-name">{user.name}</p>
+                    <p className="navbar-dropdown-email">{user.email}</p>
+                  </div>
+                  <div className="divider" style={{ margin: 'var(--space-2) 0', background: 'var(--border)' }} />
+                  <button 
+                    onClick={logout} 
+                    className="navbar-dropdown-logout-btn"
+                  >
+                    <LogOut size={12} />
+                    <span>Sign Out</span>
+                  </button>
                 </div>
               )}
             </div>
-          </div>
+          ) : (
+            <Link to="/login" className="btn btn-primary btn-sm" style={{ padding: '4px 12px' }}>
+              Sign In
+            </Link>
+          )}
         </div>
-      </nav>
+      </header>
+
+      {/* 2. FIXED DESKTOP LEFT SIDEBAR */}
+      {!isAuthPage && (
+        <aside className="navbar-left-sidebar bg-slate-900 border-r border-slate-800">
+          {/* Sidebar Portal Heading */}
+          <div className="sidebar-header-box border-b border-slate-800">
+            <div className="sidebar-header-title">
+              <div className="sidebar-status-light bg-blueprint-cyan"></div>
+              <h2 className="text-data-mono text-stark-white">Engineering Portal</h2>
+            </div>
+            <p className="sidebar-status-tag text-data-mono text-[10px] text-muted">
+              SYSTEM_STATUS: OPERATIONAL
+            </p>
+          </div>
+
+          {/* Sidebar Menu Links */}
+          <nav className="sidebar-nav-menu flex-1">
+            <p className="sidebar-group-title text-data-mono text-[10px] text-muted">Navigation</p>
+            <ul className="sidebar-nav-list">
+              {sidebarLinks.map(link => {
+                const isActive = link.to === '/' 
+                  ? location.pathname === '/' 
+                  : location.pathname.startsWith(link.to);
+                return (
+                  <li key={link.to}>
+                    <Link
+                      to={link.to}
+                      className={`sidebar-nav-link ${isActive ? 'sidebar-nav-link--active' : ''}`}
+                    >
+                      {link.icon}
+                      <span className="font-mono text-sm tracking-wide">{link.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+
+            {/* Semester Quick Filters */}
+            <div className="sidebar-semester-box">
+              <p className="sidebar-group-title text-data-mono text-[10px] text-muted">Semester Filter</p>
+              <div className="sidebar-semester-grid">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
+                  <button
+                    key={num}
+                    className="sidebar-sem-btn font-data-mono hover:border-laser-violet"
+                    onClick={() => handleSemesterClick(num)}
+                  >
+                    S{num}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </nav>
+
+          {/* Sidebar Footer Controls */}
+          <div className="sidebar-footer border-t border-slate-800">
+            <button 
+              className="btn btn-secondary btn-sm w-full py-2 font-mono flex items-center justify-center gap-1"
+              onClick={() => navigate('/upload')}
+            >
+              <span>+ New Research</span>
+            </button>
+            <div className="sidebar-footer-links mt-4">
+              <a href="#" className="sidebar-footer-item text-data-mono">
+                <Settings size={14} className="text-muted" />
+                <span>Settings</span>
+              </a>
+              <a href="#" className="sidebar-footer-item text-data-mono">
+                <HelpCircle size={14} className="text-muted" />
+                <span>Support</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+      )}
+
+      {/* 3. MOBILE BOTTOM NAVIGATION BAR */}
+      {!isAuthPage && (
+        <div className="navbar-bottom-mobile bg-slate-900 border-t border-slate-800">
+          <Link 
+            to="/" 
+            className={`mobile-nav-item ${location.pathname === '/' ? 'mobile-nav-item--active' : ''}`}
+          >
+            <LayoutDashboard size={20} />
+            <span className="text-[10px] font-mono tracking-wider">Home</span>
+          </Link>
+          <Link 
+            to="/branch/IT" 
+            className={`mobile-nav-item ${location.pathname.startsWith('/branch') ? 'mobile-nav-item--active' : ''}`}
+          >
+            <BookOpen size={20} />
+            <span className="text-[10px] font-mono tracking-wider">Syllabus</span>
+          </Link>
+          <Link 
+            to="/study-guide" 
+            className={`mobile-nav-item ${location.pathname === '/study-guide' ? 'mobile-nav-item--active' : ''}`}
+          >
+            <BrainCircuit size={20} />
+            <span className="text-[10px] font-mono tracking-wider">AI Guide</span>
+          </Link>
+          <Link 
+            to={user ? '/upload' : '/login'} 
+            className={`mobile-nav-item ${location.pathname === '/upload' || location.pathname === '/login' ? 'mobile-nav-item--active' : ''}`}
+          >
+            <UserCircle size={20} />
+            <span className="text-[10px] font-mono tracking-wider">Account</span>
+          </Link>
+        </div>
+      )}
 
       <GlobalSearch isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>

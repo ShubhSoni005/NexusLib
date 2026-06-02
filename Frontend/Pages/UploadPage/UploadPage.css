@@ -1,28 +1,37 @@
+/* ==========================================================================
+   UploadPage CSS — "Digital Laboratory" Share Material Wizard Styles
+   ========================================================================== */
+
 .upload-layout {
   display: grid;
   grid-template-columns: 1fr 300px;
   gap: var(--space-6);
   padding-bottom: var(--space-16);
+  padding-top: var(--space-8);
 }
 
 .upload-form-col {
   padding: var(--space-8);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--glass-border);
+  border-radius: 0px; /* Sharp corners */
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
 }
 
 .upload-page-header {
   margin-bottom: var(--space-6);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--space-4);
 }
 
 .upload-page-header h1 {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: var(--space-2);
 }
 
 .upload-page-header p {
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--text-secondary);
 }
@@ -40,7 +49,7 @@
   content: '';
   position: absolute;
   top: 15px; left: var(--space-8); right: var(--space-8);
-  height: 2px;
+  height: 1px;
   background: var(--border);
   z-index: 1;
 }
@@ -57,20 +66,22 @@
 .step-circle {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-full);
-  background: var(--bg-elevated);
-  border: 2px solid var(--border);
+  border-radius: 0px; /* Sharp */
+  background: var(--bg-base);
+  border: 1px solid var(--border);
   color: var(--text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: 700;
   transition: all var(--transition-base);
 }
 
 .step-label {
-  font-size: 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -82,7 +93,7 @@
   border-color: var(--accent);
   background: var(--bg-surface);
   color: var(--accent-light);
-  box-shadow: var(--accent-glow) 0 0 12px;
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .step-node--active .step-label {
@@ -124,12 +135,12 @@
 
 /* Drop Zone styles */
 .drop-zone {
-  border: 2px dashed var(--border);
-  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border);
+  border-radius: 0px; /* Sharp */
   padding: var(--space-10) var(--space-6);
   text-align: center;
   cursor: pointer;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(15, 23, 42, 0.2);
   transition: all var(--transition-base);
   display: flex;
   flex-direction: column;
@@ -149,8 +160,8 @@
 }
 
 .drop-zone--active {
-  border-color: var(--accent-light);
-  background: var(--accent-subtle);
+  border-color: var(--accent);
+  background: var(--primary-subtle);
 }
 
 .drop-zone--error {
@@ -159,13 +170,15 @@
 }
 
 .drop-title {
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: var(--text-sm);
   color: var(--text-primary);
 }
 
 .drop-sub {
-  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  font-size: 10px;
   color: var(--text-muted);
   margin-top: 2px;
 }
@@ -175,8 +188,9 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4);
-  border-radius: var(--radius-md);
+  border-radius: 0px; /* Sharp */
   border: 1px solid var(--border);
+  background: var(--bg-elevated);
 }
 
 .file-preview__info {
@@ -191,6 +205,7 @@
 }
 
 .file-preview__name {
+  font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: 600;
   color: var(--text-primary);
@@ -198,27 +213,33 @@
 }
 
 .file-preview__size {
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text-muted);
 }
 
 .file-preview__remove {
   background: transparent;
-  border: none;
+  border: 1px solid transparent;
   color: var(--text-muted);
   cursor: pointer;
   padding: var(--space-1);
+  display: flex;
+  align-items: center;
 }
 
 .file-preview__remove:hover {
   color: var(--danger);
+  border-color: var(--danger);
+  background: var(--danger-subtle);
 }
 
 /* Right guidelines panel */
 .upload-tips-panel {
   padding: var(--space-8) var(--space-6);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--glass-border);
+  border-radius: 0px; /* Sharp */
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
   height: fit-content;
 }
 
@@ -227,15 +248,20 @@
   align-items: center;
   gap: var(--space-2);
   margin-bottom: var(--space-6);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--space-3);
 }
 
 .upload-tips-header h3 {
   font-family: var(--font-display);
   font-size: var(--text-md);
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .tips-list {
+  list-style: none;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
@@ -245,16 +271,21 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  font-size: var(--text-xs);
 }
 
 .tips-list li strong {
+  font-family: var(--font-mono);
+  font-size: 10px;
   color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .tips-list li p {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 /* Success Card */
@@ -268,8 +299,9 @@
 .upload-success-card {
   max-width: 480px;
   padding: var(--space-10) var(--space-8);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--glass-border);
+  border-radius: 0px; /* Sharp */
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -284,11 +316,12 @@
 .upload-success h2 {
   font-family: var(--font-display);
   font-size: var(--text-xl);
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: var(--space-2);
 }
 
 .upload-success p {
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--text-secondary);
 }
@@ -304,7 +337,9 @@
 .upload-auth-card {
   max-width: 440px;
   padding: var(--space-10) var(--space-8);
-  border-radius: var(--radius-xl);
+  border-radius: 0px; /* Sharp */
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -319,11 +354,12 @@
 .upload-auth-card h2 {
   font-family: var(--font-display);
   font-size: var(--text-xl);
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: var(--space-2);
 }
 
 .upload-auth-card p {
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--text-secondary);
   margin-bottom: var(--space-6);

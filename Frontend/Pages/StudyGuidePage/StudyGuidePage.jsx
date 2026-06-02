@@ -1,5 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Paperclip, Link2, Bot, User, Loader, X, FileText, Globe, RefreshCw, Sparkles, HelpCircle } from 'lucide-react';
+import { 
+  Send, Paperclip, Link2, Bot, User, Loader, X, FileText, 
+  Globe, Sparkles, HelpCircle, LayoutDashboard, BookOpen, 
+  Settings, Award, Cpu, Book, Layers, CheckCircle 
+} from 'lucide-react';
 import './StudyGuidePage.css';
 
 const WELCOME = {
@@ -198,167 +202,181 @@ export default function StudyGuidePage() {
   };
 
   return (
-    <div className="guide-page page-content">
-      <div className="guide-layout">
+    <div className="page-content guide-page-root">
+      <div className="study-guide-workspace">
         
-        {/* Chat sidebar panel */}
-        <aside className="guide-sidebar surface-glass animate-fade-up">
-          <div className="guide-sidebar__header">
-            <div className="guide-sidebar__badge">
-              <Sparkles size={12} />
-              <span>Gemini Pro</span>
-            </div>
-            <h2 className="guide-sidebar__title">
-              <Bot size={18} /> 
-              <span>Study Assistant</span>
-            </h2>
-            <p className="guide-sidebar__sub">Ask questions, request explanations, or create personalized timetables.</p>
+        {/* COLUMN 1: ACTIVE STUDY PLAN */}
+        <section className="workspace-sidebar-left">
+          <div className="left-panel-header">
+            <h2 className="text-data-mono text-stark-white">Active Study Plan</h2>
+            <span className="active-dot"></span>
           </div>
-          
-          <div className="guide-sidebar__divider" />
-          
-          <p className="guide-sidebar__label">Suggested Prompts</p>
-          <div className="suggestions">
-            {SUGGESTIONS.map((s, i) => (
-              <button 
-                key={i} 
-                className="suggestion-chip surface-elevated" 
-                onClick={() => { setInput(s); textRef.current?.focus(); }}
-              >
-                <HelpCircle size={12} className="suggestion-chip__icon" />
-                <span>{s}</span>
-              </button>
-            ))}
-          </div>
-          
-          <div className="guide-sidebar__divider" />
-          
-          <div className="guide-capabilities">
-            <div className="capability"><FileText size={14} /> PDF & Document Analysis</div>
-            <div className="capability"><Globe size={14} /> Link Scraping Summary</div>
-            <div className="capability"><Bot size={14} /> GTU Exam Predictions</div>
-          </div>
-          
-          <div className="guide-sidebar__divider" />
-          
-          <button 
-            className="btn btn-ghost btn-sm clear-history-btn" 
-            onClick={() => {
-              if (window.confirm("Are you sure you want to clear your chat history?")) {
-                setMessages([WELCOME]);
-              }
-            }}
-          >
-            Clear History
-          </button>
-        </aside>
 
-        {/* Chat messages viewport */}
-        <div className="chat-container surface-glass animate-fade-up delay-100">
-          <div className="chat-messages">
+          <div className="timeline-container">
+            {/* Milestone 1 */}
+            <div className="timeline-item timeline-item--active">
+              <div className="timeline-bullet"></div>
+              <div className="timeline-badge text-data-mono">Current Module</div>
+              <h3 className="timeline-title">OS Kernels &amp; Scheduling</h3>
+              <p className="timeline-desc text-data-mono text-[10px] text-muted">Goal: Process Sync Lab</p>
+            </div>
+            
+            {/* Milestone 2 */}
+            <div className="timeline-item">
+              <div className="timeline-bullet"></div>
+              <div className="timeline-badge text-data-mono">Upcoming • 14:00</div>
+              <h3 className="timeline-title">Distributed Systems</h3>
+              <p className="timeline-desc text-data-mono text-[10px] text-muted">Goal: Consensus Algorithms</p>
+            </div>
+
+            {/* Milestone 3 */}
+            <div className="timeline-item">
+              <div className="timeline-bullet"></div>
+              <div className="timeline-badge text-data-mono">Tomorrow</div>
+              <h3 className="timeline-title">Database Internals</h3>
+              <p className="timeline-desc text-data-mono text-[10px] text-muted">Goal: B-Tree Indexing</p>
+            </div>
+          </div>
+
+          {/* Progress Tracker */}
+          <div className="progress-tracker bg-slate-800/30 border border-slate-800 p-4">
+            <div className="progress-text">
+              <span className="text-data-mono text-[10px] text-muted">Weekly Progress</span>
+              <span className="text-data-mono text-[10px] text-laser-violet font-bold">64%</span>
+            </div>
+            <div className="progress-bar-wrap">
+              <div className="progress-bar-fill" style={{ width: '64%' }}></div>
+            </div>
+          </div>
+        </section>
+
+        {/* COLUMN 2: CHAT HUB CENTER */}
+        <section className="workspace-center-chat">
+          <div className="chat-messages-container">
             {messages.map((m, i) => {
               const isLastAssistant = m.role === 'assistant' && i === messages.length - 1;
               return (
-                <div key={i} className={`chat-msg chat-msg--${m.role}`}>
-                  <div className="chat-msg__avatar shadow-premium-2">
+                <div key={i} className={`chat-message-row chat-message-row--${m.role}`}>
+                  <div className="message-avatar">
                     {m.role === 'assistant' ? <Bot size={14} /> : <User size={14} />}
                   </div>
-                  <div className="chat-msg__bubble shadow-premium-1">
-                    {m.file && (
-                      <div className="chat-msg__attach surface-elevated">
-                        <FileText size={12} />
-                        <span>{m.file}</span>
-                      </div>
-                    )}
-                    {m.url && (
-                      <div className="chat-msg__attach surface-elevated">
-                        <Globe size={12} />
-                        <span>{m.url}</span>
-                      </div>
-                    )}
-                    <div className="chat-msg__text">
+                  
+                  <div className="message-bubble-wrapper">
+                    <span className="text-data-mono text-[9px] text-muted mb-1 block">
+                      {m.role === 'assistant' ? '[AI]' : '[User]'}
+                    </span>
+                    <div className="message-bubble-content">
+                      {m.file && (
+                        <div className="bubble-attachment text-data-mono">
+                          <FileText size={12} />
+                          <span>{m.file}</span>
+                        </div>
+                      )}
+                      {m.url && (
+                        <div className="bubble-attachment text-data-mono">
+                          <Globe size={12} />
+                          <span>{m.url}</span>
+                        </div>
+                      )}
                       <MessageContent text={m.content} isLastAssistant={isLastAssistant} />
                     </div>
                   </div>
                 </div>
               );
             })}
-            
+
             {loading && (
-              <div className="chat-msg chat-msg--assistant">
-                <div className="chat-msg__avatar"><Bot size={14} /></div>
-                <div className="chat-msg__bubble chat-msg__typing">
-                  <Loader size={12} className="spin mr-2" />
-                  <span>AI is thinking...</span>
+              <div className="chat-message-row chat-message-row--assistant">
+                <div className="message-avatar"><Bot size={14} /></div>
+                <div className="message-bubble-wrapper">
+                  <span className="text-data-mono text-[9px] text-muted mb-1 block">[AI]</span>
+                  <div className="message-bubble-content typing-loader">
+                    <Loader size={12} className="spin text-laser-violet" />
+                    <span>Neural net thinking...</span>
+                  </div>
                 </div>
               </div>
             )}
             <div ref={bottomRef} />
           </div>
 
-          {/* Input control block */}
-          <div className="chat-input-area surface-elevated">
+          {/* Quick Action Suggested Prompts */}
+          <div className="chat-action-chips">
+            {SUGGESTIONS.map((s, i) => (
+              <button 
+                key={i}
+                className="action-chip font-mono text-[10px]"
+                onClick={() => { setInput(s); textRef.current?.focus(); }}
+              >
+                <span>{s}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Input Control Console */}
+          <div className="chat-input-console bg-slate-900 border border-slate-800 p-4">
+            {/* Attachment Area */}
             {(file || showUrl) && (
-              <div className="chat-attachments">
+              <div className="attachment-tray mb-3">
                 {file && (
-                  <div className="attachment-chip surface-glass">
+                  <div className="tray-chip text-data-mono text-[10px]">
                     <FileText size={12} />
                     <span>{file.name}</span>
-                    <button onClick={() => setFile(null)} aria-label="Remove attachment"><X size={12} /></button>
+                    <button onClick={() => setFile(null)} className="tray-remove"><X size={12} /></button>
                   </div>
                 )}
                 {showUrl && (
-                  <div className="url-input-wrap surface-glass">
+                  <div className="tray-url-wrap text-data-mono text-[10px]">
                     <Globe size={12} />
                     <input 
-                      className="url-input" 
-                      placeholder="Paste target webpage URL here..." 
-                      value={url} 
-                      onChange={e => setUrl(e.target.value)} 
+                      type="text"
+                      className="tray-url-input"
+                      placeholder="Enter target webpage URL..."
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
                     />
-                    <button onClick={() => { setShowUrl(false); setUrl(''); }} aria-label="Cancel URL input"><X size={12} /></button>
+                    <button onClick={() => { setShowUrl(false); setUrl(''); }} className="tray-remove"><X size={12} /></button>
                   </div>
                 )}
               </div>
             )}
-            
-            <div className="chat-input-row">
-              <div className="chat-input-box">
-                <textarea 
-                  ref={textRef} 
-                  className="chat-textarea" 
-                  placeholder="Ask a question or request a study routine..." 
-                  value={input} 
-                  onChange={e => setInput(e.target.value)} 
-                  onKeyDown={onKey} 
-                  rows={1} 
-                />
-                <div className="chat-input-actions">
-                  <button 
-                    className="input-action-btn" 
-                    title="Upload PDF Reference" 
-                    onClick={() => fileRef.current?.click()}
-                  >
-                    <Paperclip size={16} />
-                  </button>
-                  <button 
-                    className={`input-action-btn ${showUrl ? 'input-action-btn--active' : ''}`} 
-                    title="Add Reference Web Link" 
-                    onClick={() => setShowUrl(u => !u)}
-                  >
-                    <Link2 size={16} />
-                  </button>
-                </div>
+
+            <div className="input-row-console">
+              <textarea
+                ref={textRef}
+                className="console-textarea font-mono text-xs"
+                placeholder="Ask the AI Assistant for technical analysis, summaries, or practice..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={onKey}
+                rows={2}
+              />
+
+              <div className="console-actions">
+                <button 
+                  className="console-btn"
+                  title="Upload reference files"
+                  onClick={() => fileRef.current?.click()}
+                >
+                  <Paperclip size={16} />
+                </button>
+                <button 
+                  className={`console-btn ${showUrl ? 'console-btn--active' : ''}`}
+                  title="Link webpage reference"
+                  onClick={() => setShowUrl(u => !u)}
+                >
+                  <Link2 size={16} />
+                </button>
+                <button 
+                  className="console-btn send-btn-console bg-laser-violet"
+                  onClick={send}
+                  disabled={loading || (!input.trim() && !file && !url)}
+                >
+                  <Send size={14} className="text-stark-white" />
+                </button>
               </div>
-              <button 
-                className="send-btn btn-primary" 
-                onClick={send} 
-                disabled={loading || (!input.trim() && !file && !url)}
-                aria-label="Send message"
-              >
-                <Send size={15} />
-              </button>
             </div>
+            
             <input 
               ref={fileRef} 
               type="file" 
@@ -366,8 +384,82 @@ export default function StudyGuidePage() {
               style={{ display: 'none' }} 
               onChange={e => setFile(e.target.files[0])} 
             />
+
+            <div className="console-status-row mt-3 text-data-mono text-[9px] text-muted">
+              <span className="flex items-center gap-1"><CheckCircle size={10} className="text-secondary" /> Engineering Trained</span>
+              <span className="flex items-center gap-1"><FileText size={10} /> 243 Papers Indexed</span>
+              <span className="flex items-center gap-1"><Layers size={10} /> Real-time Analysis</span>
+            </div>
           </div>
-        </div>
+        </section>
+
+        {/* COLUMN 3: REFERENCE PREVIEW SIDEBAR */}
+        <section className="workspace-sidebar-right">
+          <h2 className="text-data-mono text-stark-white mb-6">Resource Preview</h2>
+          
+          <div className="preview-cards-list">
+            {/* Textbook Card */}
+            <div className="preview-card bg-slate-900 border border-slate-800">
+              <div className="preview-card-image bg-slate-800">
+                <div className="preview-format-tag text-data-mono text-[9px] bg-laser-violet text-stark-white">
+                  PDF
+                </div>
+              </div>
+              <div className="preview-card-details">
+                <h4 className="preview-card-title text-stark-white">Modern Operating Systems</h4>
+                <p className="preview-card-author text-data-mono text-[10px] text-muted">Tanenbaum &amp; Woodhull</p>
+                <div className="preview-card-meta mt-4 text-data-mono text-[9px]">
+                  <span className="text-blueprint-cyan">Chapter 4: Scheduling</span>
+                  <span className="text-muted">98% Match</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Paper Card */}
+            <div className="preview-card bg-slate-900 border border-slate-800 p-4">
+              <div className="flex gap-4">
+                <div className="preview-icon-box border border-slate-700 bg-slate-800 text-blueprint-cyan">
+                  <Award size={18} />
+                </div>
+                <div>
+                  <h4 className="preview-card-title text-stark-white">LTS: Kernel Latency Tracking</h4>
+                  <p className="preview-card-author text-data-mono text-[10px] text-muted">IEEE Journal, 2023</p>
+                </div>
+              </div>
+              <div className="flex gap-2 mt-3">
+                <span className="px-2 py-0.5 border border-slate-800 text-data-mono text-[8px] text-muted">
+                  REAL-TIME
+                </span>
+                <span className="px-2 py-0.5 border border-slate-800 text-data-mono text-[8px] text-muted">
+                  LATENCY
+                </span>
+              </div>
+            </div>
+
+            {/* Assignment Card */}
+            <div className="preview-card bg-slate-900 border border-slate-800 p-4">
+              <div className="flex gap-4">
+                <div className="preview-icon-box border border-slate-700 bg-slate-800 text-laser-violet">
+                  <Cpu size={18} />
+                </div>
+                <div>
+                  <h4 className="preview-card-title text-stark-white">Lab 04: Process Management</h4>
+                  <p className="preview-card-author text-data-mono text-[10px] text-muted">Assignment Sheet</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="right-panel-footer mt-auto border-t border-slate-800 pt-6">
+            <button 
+              onClick={() => navigate('/branch/IT')} 
+              className="w-full font-data-mono text-[10px] text-blueprint-cyan border border-blueprint-cyan/30 py-3 hover:bg-blueprint-cyan/5 transition-all text-center block bg-transparent cursor-pointer"
+            >
+              View Full Library
+            </button>
+          </div>
+        </section>
+
       </div>
     </div>
   );

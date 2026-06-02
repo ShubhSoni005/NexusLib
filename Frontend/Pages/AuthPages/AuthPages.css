@@ -1,3 +1,7 @@
+/* ==========================================================================
+   AuthPages CSS — "Digital Laboratory" Sign In & SignUp split-layouts
+   ========================================================================== */
+
 .auth-page-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -7,7 +11,7 @@
 
 .auth-brand-showcase {
   position: relative;
-  background: linear-gradient(135deg, var(--bg-surface), #0f1016);
+  background: linear-gradient(135deg, var(--bg-surface), #0b0c10);
   display: flex;
   flex-direction: column;
   padding: var(--space-12);
@@ -39,9 +43,10 @@
   gap: var(--space-2);
   font-family: var(--font-display);
   font-size: var(--text-lg);
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-primary);
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 .auth-brand-logo svg {
@@ -62,6 +67,7 @@
 }
 
 .auth-brand-hero p {
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--text-secondary);
   line-height: 1.6;
@@ -78,9 +84,11 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  font-size: var(--text-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
   color: var(--text-secondary);
-  font-weight: 500;
+  letter-spacing: 0.05em;
 }
 
 .auth-feature-item svg {
@@ -95,16 +103,18 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--text-muted);
   font-weight: 600;
+  text-transform: uppercase;
 }
 
 .bullet-pulse {
   width: 8px;
   height: 8px;
   background: var(--success);
-  border-radius: var(--radius-full);
+  border-radius: 50%;
   display: inline-block;
   box-shadow: 0 0 8px var(--success);
   animation: pulse 2s infinite ease-in-out;
@@ -116,24 +126,27 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-12) var(--space-6);
+  background: var(--bg-base);
 }
 
 .auth-form-box {
   width: 100%;
   max-width: 420px;
   padding: var(--space-8);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--glass-border);
+  border-radius: 0px; /* Sharp corners */
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
 }
 
 .auth-title {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: var(--space-2);
 }
 
 .auth-sub {
+  font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--text-secondary);
   margin-bottom: var(--space-8);
@@ -145,7 +158,7 @@
   gap: var(--space-5);
 }
 
-/* Floating labels */
+/* Floating Labels */
 .floating-group {
   position: relative;
   display: flex;
@@ -157,18 +170,18 @@
   padding: var(--space-4) var(--space-4) var(--space-3);
   background: var(--bg-elevated);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: 0px; /* Sharp corners */
   color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-family: var(--font-mono); /* Technical monospace data entry look */
+  font-size: var(--text-xs);
   outline: none;
   transition: all var(--transition-fast);
 }
 
 .floating-input:focus {
   border-color: var(--accent);
-  background-color: var(--bg-surface);
-  box-shadow: 0 0 0 2px var(--accent-glow);
+  background-color: var(--bg-base);
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .floating-label {
@@ -179,14 +192,15 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
   color: var(--text-muted);
-  font-size: var(--text-sm);
-  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
 }
 
 .floating-input:focus ~ .floating-label,
 .floating-input:not(:placeholder-shown) ~ .floating-label {
   top: 0;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   background: var(--bg-surface);
   padding: 0 6px;
@@ -218,26 +232,30 @@
 }
 
 .field-error {
-  font-size: 11px;
+  font-family: var(--font-mono);
+  font-size: 10px;
   color: var(--danger);
   margin-top: 4px;
-  font-weight: 500;
+  text-transform: uppercase;
 }
 
 .auth-btn {
   width: 100%;
   height: 48px;
+  border-radius: 0px; /* Sharp corners */
 }
 
 .auth-switch {
   text-align: center;
-  font-size: var(--text-sm);
+  font-family: var(--font-mono);
+  font-size: 11px;
   color: var(--text-secondary);
   margin-top: var(--space-6);
+  text-transform: uppercase;
 }
 
 .auth-switch a {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--accent-light);
 }
 
@@ -250,9 +268,9 @@
 }
 
 .password-strength-bar-bg {
-  height: 4px;
+  height: 3px;
   background: var(--border);
-  border-radius: var(--radius-full);
+  border-radius: 0px; /* Sharp */
   overflow: hidden;
 }
 
@@ -260,11 +278,12 @@
   height: 100%;
   width: 0;
   transition: width 0.3s ease, background-color 0.3s ease;
-  border-radius: var(--radius-full);
+  border-radius: 0px; /* Sharp */
 }
 
 .password-strength-text {
-  font-size: 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -276,5 +295,8 @@
   }
   .auth-brand-showcase {
     display: none;
+  }
+  .auth-form-container {
+    padding-top: var(--space-16) !important;
   }
 }

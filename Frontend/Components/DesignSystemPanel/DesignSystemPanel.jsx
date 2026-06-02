@@ -65,8 +65,8 @@ export default function DesignSystemPanel({ onClose }) {
         <section className="ds-section">
           <h4><Type size={12} /> Typography Rules</h4>
           <div className="ds-type-preview">
-            <h1 style={{ fontSize: 'var(--text-xl)', margin: '0 0 var(--space-1) 0' }}>Display Space Grotesk</h1>
-            <p style={{ fontSize: 'var(--text-xs)', margin: 0 }}>Humanist sans-serif body copy using Inter for max readability.</p>
+            <h1 style={{ fontSize: 'var(--text-xl)', margin: '0 0 var(--space-1) 0', fontFamily: 'var(--font-display)' }}>Display Geist Header</h1>
+            <p style={{ fontSize: 'var(--text-xs)', margin: 0, fontFamily: 'var(--font-body)' }}>Humanist sans-serif body copy using Inter for max readability.</p>
           </div>
         </section>
 

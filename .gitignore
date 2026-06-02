@@ -32,4 +32,6 @@ dist-ssr
 .env.development.local
 .env.test.local
 .env.production.local
-
+# Project local resources (do not push)
+PRD.md
+UI Sample/

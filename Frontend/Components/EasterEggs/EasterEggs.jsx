@@ -200,7 +200,7 @@ export default function EasterEggs() {
     };
 
     const bindLogoListener = () => {
-      logoElement = document.querySelector('.navbar__logo');
+      logoElement = document.querySelector('.navbar-top-logo');
       if (logoElement) {
         logoElement.addEventListener('click', handleLogoClick);
       } else {

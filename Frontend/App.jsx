@@ -76,8 +76,11 @@ function RouteWrapper({ children }) {
 }
 
 function AppRoutes() {
+  const location = useLocation();
+  const isAuthPage = ['/login', '/signup'].includes(location.pathname);
+
   return (
-    <>
+    <div className={isAuthPage ? "app-layout" : "app-layout app-layout--has-sidebar"}>
       <ScrollToTop />
       <PageMeta />
       <Navbar />
@@ -95,7 +98,7 @@ function AppRoutes() {
           <Route path="*"                                                    element={<RouteWrapper><NotFoundPage /></RouteWrapper>} />
         </Routes>
       </Suspense>
-    </>
+    </div>
   );
 }
 

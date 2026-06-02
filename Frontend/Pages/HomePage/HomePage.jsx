@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowUpRight, GraduationCap, Sparkles, BookOpen, Layers, Users, Shield } from 'lucide-react';
-import { branches, semesters } from '@db';
+import { Link, useNavigate } from 'react-router-dom';
+import { 
+  ArrowRight, GraduationCap, Sparkles, BookOpen, Layers, 
+  Users, Shield, Terminal, Cpu, Atom, Send, ArrowUpRight 
+} from 'lucide-react';
+import { branches } from '@db';
 import './HomePage.css';
 
 // Animated numeric counter that triggers when scrolled into view
@@ -56,144 +59,283 @@ function Counter({ value }) {
 }
 
 export default function HomePage() {
-  const title1 = "Your Academic";
-  const title2 = "Edge Starts Here";
+  const navigate = useNavigate();
+  const [chatInput, setChatInput] = useState('');
+  const [chatMessages, setChatMessages] = useState([
+    { role: 'user', content: 'Explain the Bernoulli principle in fluid dynamics.' },
+    { role: 'ai', content: 'Analysis complete. Visualizing fluid flow equation:\n\nP + ½ρv² + ρgh = constant\n\nCalculating dynamic pressure variables...' }
+  ]);
 
-  const renderRevealText = (text, startDelay = 0) => {
-    return text.split('').map((char, index) => (
-      <span 
-        key={index} 
-        className="reveal-char" 
-        style={{ animationDelay: `${startDelay + index * 0.025}s` }}
-      >
-        {char === ' ' ? '\u00A0' : char}
-      </span>
-    ));
+  // Handle minor interactive teaser submit
+  const handleChatTeaserSubmit = (e) => {
+    e.preventDefault();
+    if (!chatInput.trim()) return;
+    const userMsg = chatInput;
+    setChatMessages(prev => [...prev, { role: 'user', content: userMsg }]);
+    setChatInput('');
+
+    setTimeout(() => {
+      setChatMessages(prev => [
+        ...prev, 
+        { 
+          role: 'ai', 
+          content: `Redirecting query to full Neural Net Interface...\nInitializing study guide parameters for: "${userMsg}"` 
+        }
+      ]);
+      setTimeout(() => {
+        navigate('/study-guide');
+      }, 1500);
+    }, 800);
+  };
+
+  // Maps branch ids to icons and indexes
+  const getBranchMeta = (id) => {
+    switch (id) {
+      case 'IT':
+        return { icon: <Terminal size={32} className="text-laser-violet" />, code: '0X01', modules: '24 MODULES' };
+      case 'CE':
+        return { icon: <Cpu size={32} className="text-laser-violet" />, code: '0X02', modules: '18 MODULES' };
+      case 'CSE':
+        return { icon: <Atom size={32} className="text-laser-violet" />, code: '0X03', modules: '12 MODULES' };
+      default:
+        return { icon: <BookOpen size={32} className="text-laser-violet" />, code: '0X00', modules: '8 MODULES' };
+    }
   };
 
   return (
     <div className="page-content">
-      {/* Cinematic Hero Section */}
-      <section className="hero hero-gradient-mesh">
-        <div className="container hero__container">
-          <div className="hero__badge animate-fade-up">
-            <GraduationCap size={14} className="hero__badge-icon" />
-            <span>GTU Engineering Resources</span>
+      {/* 1. Cinematic Hero Section */}
+      <section className="hero-section blueprint-grid">
+        <div className="hero-grid-overlay"></div>
+        <div className="container hero-container animate-fade-up">
+          <div className="hero-badge">
+            <span className="hero-badge-dot"></span>
+            <span className="text-data-mono">Engineering Research Portal v2.4</span>
           </div>
 
-          <h1 className="hero__title">
-            <div className="hero__title-row">{renderRevealText(title1, 0.2)}</div>
-            <div className="hero__title-row hero__accent">{renderRevealText(title2, 0.6)}</div>
+          <h1 className="hero-title">
+            Your Academic <br/>
+            <span className="hero-italic-violet">Command Center</span>
           </h1>
 
-          <p className="hero__sub animate-fade-up delay-300">
-            Access curated study materials, syllabus sheets, PYQs, and interactive AI-guided study plans
-            tailored for IT, CE, and CSE semesters at GTU.
+          <p className="hero-subtitle">
+            Access curated GTU engineering resources, interactive AI study plans, and technical guides designed for the precision required in modern engineering.
           </p>
 
-          <div className="hero__actions animate-fade-up delay-400">
-            <Link to="/branch/IT/semester/6/subject/Artificial%20Intelligence" className="btn btn-primary">
-              <Sparkles size={16} />
-              <span>Explore AI Subject</span>
+          <div className="hero-actions">
+            <button 
+              className="btn btn-primary btn-large laser-glow"
+              onClick={() => {
+                const el = document.getElementById('disciplines-section');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <span>Explore Disciplines</span>
+            </button>
+            <Link to="/study-guide" className="btn btn-secondary btn-large">
+              <span>Try AI Guide</span>
             </Link>
-            <Link to="/study-guide" className="btn btn-secondary">
-              <span>Try AI Study Guide</span>
-            </Link>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="scroll-indicator">
+          <span className="text-data-mono text-[10px] text-muted">Scroll to Scan</span>
+          <div className="scroll-bar">
+            <div className="scroll-bar-fill"></div>
           </div>
         </div>
       </section>
 
-      {/* Branch Grid */}
-      <section className="section branch-section scroll-reveal">
-        <div className="container">
-          <div className="section__header">
-            <span className="section__sub-tag">Academic Disciplines</span>
-            <h2>Select Your Department</h2>
-            <p className="text-secondary">Explore reference textbooks, question papers, and AI guides for your stream.</p>
+      {/* 2. Live Stats Row */}
+      <section className="stats-row border-y border-slate-800 bg-slate-900/20">
+        <div className="stats-grid">
+          <div className="stat-column">
+            <span className="text-data-mono text-blueprint-cyan">01 // STREAM_SYNC</span>
+            <h3 className="stat-heading"><Counter value="3" /> Streams Modeled</h3>
           </div>
+          <div className="stat-column">
+            <span className="text-data-mono text-laser-violet">02 // SEM_COVERAGE</span>
+            <h3 className="stat-heading"><Counter value="24" /> Semesters Covered</h3>
+          </div>
+          <div className="stat-column">
+            <span className="text-data-mono text-blueprint-cyan">03 // SUBJECT_DATA</span>
+            <h3 className="stat-heading"><Counter value="100+" /> Subjects</h3>
+          </div>
+        </div>
+      </section>
 
-          <div className="branch-grid">
-            {branches.map((b, i) => (
+      {/* 3. Disciplines Grid */}
+      <section id="disciplines-section" className="disciplines-section container scroll-reveal">
+        <div className="disciplines-header border-l-2 border-laser-violet">
+          <div>
+            <span className="text-data-mono text-laser-violet">Directory</span>
+            <h2 className="disciplines-title">Academic Disciplines</h2>
+          </div>
+          <div className="text-data-mono text-muted text-xs">CATALOGUE_V2.0.42</div>
+        </div>
+
+        <div className="disciplines-grid">
+          {branches.map((b) => {
+            const meta = getBranchMeta(b.id);
+            return (
               <Link
                 key={b.id}
                 to={`/branch/${b.id}`}
-                className="branch-card surface-glass"
-                style={{ 
-                  '--branch-color': b.color,
-                  animationDelay: `${i * 0.15}s`
-                }}
+                className="discipline-card group"
               >
-                <div className="branch-card__accent" />
-                <span className="badge badge-accent branch-card__tag">{b.tag}</span>
-                <h3 className="branch-card__name">{b.name}</h3>
-                <p className="branch-card__desc">{b.desc}</p>
-                <div className="branch-card__footer">
-                  <span className="branch-card__count">{semesters[b.id].length} Semesters</span>
-                  <ArrowUpRight size={18} className="branch-card__arrow" />
+                <div className="discipline-code text-data-mono text-slate-800 group-hover:text-laser-violet">
+                  {meta.code}
                 </div>
+                <div className="discipline-content">
+                  <div className="discipline-icon-box">
+                    {meta.icon}
+                  </div>
+                  <h3 className="discipline-name">{b.name}</h3>
+                  <p className="discipline-desc">{b.desc}</p>
+                </div>
+
+                <div className="discipline-footer">
+                  <span className="discipline-modules-tag text-data-mono text-[10px]">
+                    {meta.modules}
+                  </span>
+                  <div className="discipline-access-btn text-data-mono text-xs">
+                    <span>ACCESS</span>
+                    <ArrowRight size={14} className="discipline-arrow" />
+                  </div>
+                </div>
+                <div className="discipline-bg-deco"></div>
               </Link>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* Quick Stats Section */}
-      <section className="section stats-section scroll-reveal">
-        <div className="container">
-          <div className="stats-grid">
-            {[
-              { val: '3',    label: 'Streams Modeled', icon: <Layers size={20} /> },
-              { val: '24',   label: 'Semesters Covered', icon: <BookOpen size={20} /> },
-              { val: '100+', label: 'Available Subjects', icon: <Users size={20} /> },
-              { val: '6',    label: 'Resource Categories', icon: <Shield size={20} /> },
-            ].map((s, i) => (
-              <div 
-                key={i} 
-                className="stat-card surface-glass"
-              >
-                <div className="stat-card__icon">{s.icon}</div>
-                <div className="stat-card__val">
-                  <Counter value={s.val} />
-                </div>
-                <div className="stat-card__label">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* 4. AI Assistant Teaser */}
+      <section className="ai-teaser-section border-t border-slate-800 bg-slate-900/10">
+        <div className="container ai-teaser-grid">
+          <div className="ai-teaser-info">
+            <span className="text-data-mono text-laser-violet px-3 py-1 border border-laser-violet/20 bg-laser-violet/5">
+              NEURAL_NET_INTERFACE v1.0
+            </span>
+            <h2 className="ai-teaser-title">
+              Interactive AI <br/>
+              <span className="text-blueprint-cyan">Study Architect</span>
+            </h2>
+            <p className="ai-teaser-description">
+              Input your syllabus or upload your technical notes. Our AI Guide generates high-precision study paths, identifies knowledge gaps, and provides instant schematic-level explanations.
+            </p>
 
-      {/* Modern Page Footer */}
-      <footer className="footer mt-auto">
-        <div className="container footer__container">
-          <div className="footer__branding">
-            <Link to="/" className="footer__logo">
-              <BookOpen size={20} />
-              <span>NexusLib</span>
+            <ul className="ai-teaser-features">
+              <li>
+                <Sparkles size={16} className="text-laser-violet" />
+                <span>Automated Syllabus Parsing</span>
+              </li>
+              <li>
+                <Sparkles size={16} className="text-laser-violet" />
+                <span>Knowledge Gap Identification</span>
+              </li>
+              <li>
+                <Sparkles size={16} className="text-laser-violet" />
+                <span>24/7 Technical Tutoring</span>
+              </li>
+            </ul>
+
+            <Link to="/study-guide" className="btn btn-primary mt-6">
+              Launch AI Guide Interface
             </Link>
-            <p className="footer__desc mt-2">
-              GTU Engineering study portal. Free open source repository of question sheets, reference slides, and AI study schedules.
+          </div>
+
+          <div className="ai-simulation-wrapper">
+            <div className="ai-simulation-container glass-panel">
+              <div className="ai-simulation-header">
+                <div className="ai-status">
+                  <span className="ai-status-dot"></span>
+                  <span className="text-data-mono text-xs">nexus_ai_v1_active</span>
+                </div>
+                <div className="ai-header-controls">
+                  <span className="control-box"></span>
+                  <span className="control-box"></span>
+                </div>
+              </div>
+
+              <div className="ai-simulation-messages">
+                {chatMessages.map((msg, i) => (
+                  <div 
+                    key={i} 
+                    className={`sim-bubble ${msg.role === 'user' ? 'sim-user' : 'sim-ai'}`}
+                  >
+                    <div className="sim-bubble-header text-data-mono text-[10px] text-muted">
+                      {msg.role === 'user' ? '[User]' : '[AI]'}
+                    </div>
+                    <p className="sim-bubble-text">{msg.content}</p>
+                  </div>
+                ))}
+              </div>
+
+              <form onSubmit={handleChatTeaserSubmit} className="ai-simulation-input-row">
+                <input 
+                  type="text" 
+                  className="sim-input" 
+                  placeholder="Enter query..."
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                />
+                <button type="submit" className="sim-send-btn">
+                  <Send size={14} className="text-stark-white" />
+                </button>
+              </form>
+            </div>
+
+            {/* Corner Deco Borders */}
+            <div className="deco-corner deco-top-right"></div>
+            <div className="deco-corner deco-bottom-left"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Modern Page Footer */}
+      <footer className="home-footer border-t border-slate-800 bg-slate-900">
+        <div className="container footer-grid">
+          <div className="footer-brand-box">
+            <span className="text-data-mono font-bold text-stark-white tracking-tighter text-lg block mb-4">
+              NexusLib
+            </span>
+            <p className="text-data-mono text-[11px] text-muted leading-relaxed max-w-xs">
+              The precision platform for GTU engineering students. Access, analyze, and achieve with AI-driven academic tools.
             </p>
           </div>
-          
-          <div className="footer__links-group">
-            <span className="footer__links-title">Quick Links</span>
-            <div className="footer__links">
-              <Link to="/">Home</Link>
-              <Link to="/study-guide">AI Study Guide</Link>
-              <Link to="/upload">Upload Document</Link>
+
+          <div className="footer-links-columns">
+            <div className="footer-column">
+              <span className="text-data-mono text-[11px] text-stark-white block mb-4">Resources</span>
+              <ul className="footer-links-list text-data-mono text-[11px] text-muted">
+                <li><a href="#" className="hover:text-laser-violet transition-colors">Documentation</a></li>
+                <li><a href="#" className="hover:text-laser-violet transition-colors">Changelog</a></li>
+                <li><a href="#" className="hover:text-laser-violet transition-colors">API Reference</a></li>
+              </ul>
+            </div>
+            <div className="footer-column">
+              <span className="text-data-mono text-[11px] text-stark-white block mb-4">Project</span>
+              <ul className="footer-links-list text-data-mono text-[11px] text-muted">
+                <li><a href="#" className="hover:text-laser-violet transition-colors">About Us</a></li>
+                <li><a href="#" className="hover:text-laser-violet transition-colors">Open Source</a></li>
+                <li><a href="#" className="hover:text-laser-violet transition-colors">System Status</a></li>
+              </ul>
             </div>
           </div>
-
-          <div className="footer__social-proof">
-            <span className="footer__links-title">Engagement</span>
-            <p className="text-secondary text-sm">Trusted by 10,000+ GTU engineering students weekly.</p>
-          </div>
         </div>
-        
-        <div className="footer__bottom">
-          <div className="container footer__bottom-inner">
-            <span>&copy; {new Date().getFullYear()} NexusLib. Designed for Engineering Excellence.</span>
-            <span>All rights reserved.</span>
+
+        <div className="footer-bottom border-t border-slate-800/60 mt-12 pt-6">
+          <div className="container footer-bottom-inner">
+            <span className="text-data-mono text-[10px] text-muted">
+              © {new Date().getFullYear()} NexusLib Engineering. Designed for Excellence.
+            </span>
+            <div className="footer-bottom-links text-data-mono text-[10px] text-muted">
+              <a href="#" className="hover:text-blueprint-cyan">Privacy</a>
+              <a href="#" className="hover:text-blueprint-cyan">Security</a>
+              <a href="#" className="hover:text-blueprint-cyan">Terms</a>
+            </div>
           </div>
         </div>
       </footer>

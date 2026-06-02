@@ -2,7 +2,7 @@
 
 A professional academic resource sharing platform for GTU (Gujarat Technological University) engineering students. Built with React + Vite.
 
-## Features
+## Features :
 
 - 📚 Study materials for IT, CE & CSE branches (Semesters 1–8)
 - 🤖 AI Study Guide chatbot (text, file & URL input)

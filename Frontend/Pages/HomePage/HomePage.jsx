@@ -126,11 +126,11 @@ export default function HomePage() {
             <button 
               className="btn btn-primary btn-large laser-glow"
               onClick={() => {
-                const el = document.getElementById('disciplines-section');
+                const el = document.getElementById('departments-section');
                 el?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              <span>Explore Disciplines</span>
+              <span>Explore Departments</span>
             </button>
             <Link to="/study-guide" className="btn btn-secondary btn-large">
               <span>Try AI Guide</span>
@@ -165,46 +165,46 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. Disciplines Grid */}
-      <section id="disciplines-section" className="disciplines-section container scroll-reveal">
-        <div className="disciplines-header border-l-2 border-laser-violet">
+      {/* 3. Departments Grid */}
+      <section id="departments-section" className="departments-section container scroll-reveal">
+        <div className="departments-header border-l-2 border-laser-violet">
           <div>
             <span className="text-data-mono text-laser-violet">Directory</span>
-            <h2 className="disciplines-title">Academic Disciplines</h2>
+            <h2 className="departments-title">Academic Departments</h2>
           </div>
           <div className="text-data-mono text-muted text-xs">CATALOGUE_V2.0.42</div>
         </div>
 
-        <div className="disciplines-grid">
+        <div className="departments-grid">
           {branches.map((b) => {
             const meta = getBranchMeta(b.id);
             return (
               <Link
                 key={b.id}
                 to={`/branch/${b.id}`}
-                className="discipline-card group"
+                className="department-card group"
               >
-                <div className="discipline-code text-data-mono text-slate-800 group-hover:text-laser-violet">
+                <div className="department-code text-data-mono text-slate-800 group-hover:text-laser-violet">
                   {meta.code}
                 </div>
-                <div className="discipline-content">
-                  <div className="discipline-icon-box">
+                <div className="department-content">
+                  <div className="department-icon-box">
                     {meta.icon}
                   </div>
-                  <h3 className="discipline-name">{b.name}</h3>
-                  <p className="discipline-desc">{b.desc}</p>
+                  <h3 className="department-name">{b.name}</h3>
+                  <p className="department-desc">{b.desc}</p>
                 </div>
 
-                <div className="discipline-footer">
-                  <span className="discipline-modules-tag text-data-mono text-[10px]">
+                <div className="department-footer">
+                  <span className="department-modules-tag text-data-mono text-[10px]">
                     {meta.modules}
                   </span>
-                  <div className="discipline-access-btn text-data-mono text-xs">
+                  <div className="department-access-btn text-data-mono text-xs">
                     <span>ACCESS</span>
-                    <ArrowRight size={14} className="discipline-arrow" />
+                    <ArrowRight size={14} className="department-arrow" />
                   </div>
                 </div>
-                <div className="discipline-bg-deco"></div>
+                <div className="department-bg-deco"></div>
               </Link>
             );
           })}

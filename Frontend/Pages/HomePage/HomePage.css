@@ -170,12 +170,12 @@
 }
 
 
-/* --- 3. Disciplines Section --- */
-.disciplines-section {
+/* --- 3. Departments Section --- */
+.departments-section {
   padding: var(--space-20) var(--container-pad);
 }
 
-.disciplines-header {
+.departments-header {
   padding-left: var(--space-5);
   display: flex;
   justify-content: space-between;
@@ -183,7 +183,7 @@
   margin-bottom: var(--space-12);
 }
 
-.disciplines-title {
+.departments-title {
   font-family: var(--font-display);
   font-size: var(--text-3xl);
   font-weight: 800;
@@ -191,7 +191,7 @@
   margin-top: var(--space-1);
 }
 
-.disciplines-grid {
+.departments-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px; /* Creates thin border-like spaces between cards */
@@ -199,7 +199,7 @@
   border: 1px solid var(--border);
 }
 
-.discipline-card {
+.department-card {
   position: relative;
   background: var(--bg-surface);
   padding: var(--space-10);
@@ -212,7 +212,7 @@
   transition: all var(--transition-base);
 }
 
-.discipline-code {
+.department-code {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -221,7 +221,7 @@
   transition: color var(--transition-fast);
 }
 
-.discipline-icon-box {
+.department-icon-box {
   margin-bottom: var(--space-8);
   width: 48px;
   height: 48px;
@@ -232,7 +232,7 @@
   background: var(--bg-base);
 }
 
-.discipline-name {
+.department-name {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
   font-weight: 700;
@@ -242,14 +242,14 @@
   margin-bottom: var(--space-3);
 }
 
-.discipline-desc {
+.department-desc {
   font-family: var(--font-body);
   font-size: var(--text-sm);
   color: var(--text-secondary);
   line-height: 1.6;
 }
 
-.discipline-footer {
+.department-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -260,13 +260,13 @@
   z-index: 10;
 }
 
-.discipline-modules-tag {
+.department-modules-tag {
   border: 1px solid var(--border);
   padding: var(--space-1) var(--space-3);
   color: var(--text-secondary);
 }
 
-.discipline-access-btn {
+.department-access-btn {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -275,32 +275,32 @@
   transition: gap var(--transition-fast);
 }
 
-.discipline-arrow {
+.department-arrow {
   color: var(--text-muted);
   transition: transform var(--transition-fast), color var(--transition-fast);
 }
 
 /* Card Hover Logic */
-.discipline-card:hover {
+.department-card:hover {
   background: var(--bg-hover);
   box-shadow: inset 0 0 15px rgba(139, 92, 246, 0.05);
 }
 
-.discipline-card:hover .discipline-access-btn {
+.department-card:hover .department-access-btn {
   color: var(--accent-light);
   gap: var(--space-3);
 }
 
-.discipline-card:hover .discipline-arrow {
+.department-card:hover .department-arrow {
   color: var(--accent-light);
   transform: translateX(3px);
 }
 
-.discipline-card:hover .discipline-code {
+.department-card:hover .department-code {
   color: var(--accent-light);
 }
 
-.discipline-bg-deco {
+.department-bg-deco {
   position: absolute;
   bottom: -40px;
   right: -40px;
@@ -312,7 +312,7 @@
   transition: border-color var(--transition-base), transform var(--transition-base);
 }
 
-.discipline-card:hover .discipline-bg-deco {
+.department-card:hover .department-bg-deco {
   border-color: rgba(139, 92, 246, 0.12);
   transform: rotate(45deg) scale(1.1);
 }
@@ -577,7 +577,7 @@
 
 /* --- 6. Responsive Adaptation --- */
 @media (max-width: 991px) {
-  .disciplines-grid {
+  .departments-grid {
     grid-template-columns: 1fr;
   }
   .ai-teaser-grid {

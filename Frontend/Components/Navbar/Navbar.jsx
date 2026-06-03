@@ -61,7 +61,7 @@ export default function Navbar() {
   // Link lists for navigation
   const sidebarLinks = [
     { to: '/',            label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
-    { to: '/branch/IT',   label: 'Disciplines', icon: <BookOpen size={18} /> },
+    { to: '/branch/IT',   label: 'Departments', icon: <BookOpen size={18} /> },
     { to: '/study-guide', label: 'AI Assistant', icon: <BrainCircuit size={18} /> },
     { to: '/upload',      label: 'My Uploads', icon: <UploadCloud size={18} /> }
   ];
@@ -79,7 +79,7 @@ export default function Navbar() {
               to="/branch/IT" 
               className={`navbar-top-link ${location.pathname.startsWith('/branch') ? 'navbar-top-link--active' : ''}`}
             >
-              Disciplines
+              Departments
             </Link>
             <Link 
               to="/study-guide" 
@@ -159,20 +159,8 @@ export default function Navbar() {
       {/* 2. FIXED DESKTOP LEFT SIDEBAR */}
       {!isAuthPage && (
         <aside className="navbar-left-sidebar bg-slate-900 border-r border-slate-800">
-          {/* Sidebar Portal Heading */}
-          <div className="sidebar-header-box border-b border-slate-800">
-            <div className="sidebar-header-title">
-              <div className="sidebar-status-light bg-blueprint-cyan"></div>
-              <h2 className="text-data-mono text-stark-white">Engineering Portal</h2>
-            </div>
-            <p className="sidebar-status-tag text-data-mono text-[10px] text-muted">
-              SYSTEM_STATUS: OPERATIONAL
-            </p>
-          </div>
-
           {/* Sidebar Menu Links */}
           <nav className="sidebar-nav-menu flex-1">
-            <p className="sidebar-group-title text-data-mono text-[10px] text-muted">Navigation</p>
             <ul className="sidebar-nav-list">
               {sidebarLinks.map(link => {
                 const isActive = link.to === '/' 

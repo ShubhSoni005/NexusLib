@@ -243,33 +243,7 @@
   transition: transform var(--transition-base);
 }
 
-.sidebar-header-box {
-  padding: var(--space-5) var(--space-6);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
 
-.sidebar-header-title {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.sidebar-status-light {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--secondary-light);
-}
-
-.sidebar-header-title h2 {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
 
 .sidebar-nav-menu {
   flex: 1;

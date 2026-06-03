@@ -16,8 +16,8 @@ function BrandShowcase() {
         </Link>
         
         <div className="auth-brand-hero">
-          <h2>Engineering Study Portal reimagined.</h2>
-          <p>Access notes, past papers, syllabus structures, and an AI study coach to maximize your GPA.</p>
+          <h2>Engineering Study Portal Reimagined.</h2>
+          <p>Access notes, PYQs, syllabus resources, and an AI-powered study coach to make exam preparation faster and more effective.</p>
         </div>
 
         <div className="auth-brand-features">

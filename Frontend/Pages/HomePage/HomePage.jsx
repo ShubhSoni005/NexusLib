@@ -119,7 +119,7 @@ export default function HomePage() {
           </h1>
 
           <p className="hero-subtitle">
-            Access curated GTU engineering resources, interactive AI study plans, and technical guides designed for the precision required in modern engineering.
+            Access curated GTU engineering resources, interactive AI study plans, and technical guides designed for the precision required in engineering academics.
           </p>
 
           <div className="hero-actions">
@@ -133,7 +133,7 @@ export default function HomePage() {
               <span>Explore Departments</span>
             </button>
             <Link to="/study-guide" className="btn btn-secondary btn-large">
-              <span>Try AI Guide</span>
+              <span>Schedular / Guide</span>
             </Link>
           </div>
         </div>
@@ -142,7 +142,7 @@ export default function HomePage() {
         <div className="scroll-indicator">
           <span className="text-data-mono text-[10px] text-muted">Scroll to Scan</span>
           <div className="scroll-bar">
-            <div className="scroll-bar-fill"></div>
+            <div className="scroll-bar-fill">SCROLL TO SCAN</div>
           </div>
         </div>
       </section>
@@ -151,11 +151,11 @@ export default function HomePage() {
       <section className="stats-row border-y border-slate-800 bg-slate-900/20">
         <div className="stats-grid">
           <div className="stat-column">
-            <span className="text-data-mono text-blueprint-cyan">01 // STREAM_SYNC</span>
+            <span className="text-data-mono text-blueprint-cyan">01 // STREAMS</span>
             <h3 className="stat-heading"><Counter value="3" /> Streams Modeled</h3>
           </div>
           <div className="stat-column">
-            <span className="text-data-mono text-laser-violet">02 // SEM_COVERAGE</span>
+            <span className="text-data-mono text-laser-violet">02 // SEMESTERS</span>
             <h3 className="stat-heading"><Counter value="24" /> Semesters Covered</h3>
           </div>
           <div className="stat-column">
@@ -172,7 +172,7 @@ export default function HomePage() {
             <span className="text-data-mono text-laser-violet">Directory</span>
             <h2 className="departments-title">Academic Departments</h2>
           </div>
-          <div className="text-data-mono text-muted text-xs">CATALOGUE_V2.0.42</div>
+          <div className="text-data-mono text-muted text-xs"></div>
         </div>
 
         <div className="departments-grid">
@@ -302,7 +302,7 @@ export default function HomePage() {
               NexusLib
             </span>
             <p className="text-data-mono text-[11px] text-muted leading-relaxed max-w-xs">
-              The precision platform for GTU engineering students. Access, analyze, and achieve with AI-driven academic tools.
+              The precision platform for GTU engineering students. Access, Apply, and achieve with AI-driven academic supports.
             </p>
           </div>
 

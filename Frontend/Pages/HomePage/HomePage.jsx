@@ -110,12 +110,12 @@ export default function HomePage() {
         <div className="container hero-container animate-fade-up">
           <div className="hero-badge">
             <span className="hero-badge-dot"></span>
-            <span className="text-data-mono">Engineering Research Portal v2.4</span>
+            <span className="text-data-mono">Engineering Resource Portal</span>
           </div>
 
           <h1 className="hero-title">
             Your Academic <br/>
-            <span className="hero-italic-violet">Command Center</span>
+            <span className="hero-italic-violet">SUPPORT Center</span>
           </h1>
 
           <p className="hero-subtitle">

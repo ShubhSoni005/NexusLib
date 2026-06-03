@@ -27,18 +27,18 @@ function BrandShowcase() {
           </div>
           <div className="auth-feature-item">
             <Bookmark size={16} />
-            <span>Quick-save textbooks & notes</span>
+            <span>Quick-save resources</span>
           </div>
           <div className="auth-feature-item">
             <Sparkles size={16} />
-            <span>Gemini AI chat assistant</span>
+            <span>AI assistance</span>
           </div>
         </div>
 
         <footer className="auth-brand-footer">
           <div className="social-proof-counter">
             <span className="bullet-pulse" />
-            <span>Join 10,000+ active GTU engineering students today</span>
+            <span>Join many of your peers now</span>
           </div>
         </footer>
       </div>
